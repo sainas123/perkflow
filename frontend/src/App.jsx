@@ -1,66 +1,28 @@
+import {createBrowserRouter,createRoutesFromElements, Route} from "react-router-dom"
+import RootLayout from "./layouts/RootLayout"
+import Login from "./pages/login"
+import Dashboard from "./pages/dashboard"
 
-import { useState } from "react";
-function App() {
+const router=createBrowserRouter(
+    createRoutesFromElements(
 
+        <Route path="/" element={<RootLayout/>}>
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+            <Route index element={<Login/>}/>
+            <Route path="dashboard" element={<Dashboard/>}/>
 
-  const handlechange=(e)=>{
-    setEmail(e.target.value)
-  }
+        </Route>
 
-  const handlepassword=(e)=>{
-    setPassword(e.target.value)
+    )
+  
+)
 
-  }
-
-  const handlelogin=()=>{
-    if(email.trim()==="" || password.trim()===""){
-      alert("Please fill in all fields")
-      return;
-    }
-    else if(!email.includes("@")||!email.includes(".")){
-      alert("Please enter a valid email address")
-      return;
-    }else{
-      alert("Login successful")
-    }
-  }
+export default router
 
 
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 gap-2">
+         
 
-      <h1 className="text-4xl font-bold text-white font-display">PerkFlow</h1>
-      <h3 className="text-white ">welcome back!</h3>
 
-      <div className="w-full max-w-md rounded-2xl bg-white p-4 shadow-xl mb-4 flex flex-col gap-2  items-center">
-
-        <input 
-        className="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none focus:ring-2 focus:ring-slate-700" 
-        type="email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={handlechange}
-        />   
-
-        <input className="w-full  rounded-lg border border-slate-300 px-2 py-2 outline-none focus:ring-2 focus:ring-slate-900"
-        type="password"
-        placeholder="Enter password"
-        value={password}
-        onChange={handlepassword}
-        />
-
-        <button className="w-40 rounded-lg bg-blue-950  text-white font-medium py-2 hover:bg-slate-800 "
-        onClick={handlelogin}
-        >Login</button>
         
          
-      </div>
-
-    </div>
-  )
-}
-
-export default App
+    
