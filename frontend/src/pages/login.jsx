@@ -38,10 +38,11 @@ function Login() {
       setLoading(true);
       
 
-      setTimeout(()=>{
+      setTimeout(() => {
         setLoading(false);
+        sessionStorage.setItem('isAuthenticated', 'true');
         navigate("/dashboard");
-      },2000)
+      }, 2000)
       setError("");
       
     }
@@ -51,56 +52,80 @@ function Login() {
 
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 gap-2">
+    <div className="flex flex-col items-center justify-center py-12 px-4 animate-fade-in">
 
-      <h1 className="text-4xl font-bold text-white font-display">PerkFlow</h1>
-      <h3 className="text-white ">welcome back!</h3>
-
-      
-
-      <div className="w-full max-w-md rounded-2xl bg-white p-4 shadow-xl mb-4 flex flex-col gap-2  items-center">
-
-        <input 
-        className="w-full rounded-lg border border-slate-300 px-4 py-2 outline-none focus:ring-2 focus:ring-slate-700" 
-        type="email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={handlechange}
-        />   
-
-        <input className="w-full  rounded-lg border border-slate-300 px-2 py-2 outline-none focus:ring-2 focus:ring-slate-900"
-        type="password"
-        placeholder="Enter password"
-        value={password}
-        onChange={handlepassword}
-        />
-
-        <div>
-        {loading ? <h3 className="text-yellow-900">Loading...</h3> :  <button className="w-40 rounded-lg bg-blue-950  text-white font-medium py-2 hover:bg-slate-800 "
-        onClick={handlelogin}
-        >Login</button>}
-        </div>
-
-       
-        <div> {
-          error==="" ? "" : <h3 className="text-red-500">{error}</h3>
-        }
-        </div>
-
-        <div>
-          {success ? <h3 className="text-green-500">Login successful!</h3> : ""}
-        </div>
-
-
-
-
-         
-
-
+      <div className="w-full max-w-md bg-white/40 backdrop-blur-3xl rounded-[2.5rem] p-8 md:p-10 shadow-[0_8px_32px_rgba(31,38,135,0.05)] border border-white/60 flex flex-col items-center relative overflow-hidden">
         
-         
-      </div>
+        {/* Decorative Background Gradients */}
+        <div className="absolute -top-24 -left-24 w-48 h-48 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div className="absolute top-20 -right-20 w-48 h-48 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute -bottom-24 left-10 w-48 h-48 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" style={{ animationDelay: '4s' }}></div>
 
+        {/* Header */}
+        <div className="z-10 flex flex-col items-center gap-2 w-full mb-8">
+          <h1 className="text-4xl font-black bg-gradient-to-br from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent tracking-tight text-center drop-shadow-sm">
+            PerkFlow
+          </h1>
+          <h3 className="text-slate-500 font-semibold text-sm">Welcome back! Please sign in.</h3>
+        </div>
+
+        {/* Form Inputs */}
+        <div className="z-10 w-full flex flex-col gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest pl-2">Email Address</label>
+            <input 
+              className="w-full rounded-2xl border border-white/50 bg-white/70 px-5 py-3.5 text-slate-700 outline-none focus:ring-2 focus:ring-pink-400 focus:bg-white transition-all shadow-sm placeholder-slate-300" 
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={handlechange}
+            />   
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest pl-2">Password</label>
+            <input 
+              className="w-full rounded-2xl border border-white/50 bg-white/70 px-5 py-3.5 text-slate-700 outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all shadow-sm placeholder-slate-300"
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={handlepassword}
+            />
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="z-10 w-full mt-8">
+          {loading ? (
+            <div className="flex justify-center py-3.5 border border-white/50 bg-white/50 rounded-2xl shadow-sm">
+              <h3 className="text-purple-600 font-bold animate-pulse">Authenticating...</h3>
+            </div>
+          ) : (
+            <button 
+              className="w-full rounded-2xl bg-gradient-to-r from-pink-500 to-blue-500 text-white font-bold py-3.5 shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 hover:scale-[1.02] hover:-translate-y-0.5 transition-all active:scale-[0.98]"
+              onClick={handlelogin}
+            >
+              Login
+            </button>
+          )}
+        </div>
+       
+        {/* Messages */}
+        <div className="z-10 w-full mt-4 flex flex-col items-center justify-center min-h-[28px]"> 
+          {error === "" ? null : (
+            <div className="bg-pink-50/80 border border-pink-200 px-4 py-2 rounded-xl w-full text-center shadow-sm">
+              <h3 className="text-pink-600 font-bold text-xs">{error}</h3>
+            </div>
+          )}
+          
+          {success ? (
+            <div className="bg-blue-50/80 border border-blue-200 px-4 py-2 rounded-xl w-full text-center shadow-sm">
+              <h3 className="text-blue-600 font-bold text-xs">Login successful!</h3>
+            </div>
+          ) : null}
+        </div>
+
+      </div>
     </div>
   )
 }
