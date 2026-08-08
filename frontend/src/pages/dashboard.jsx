@@ -1,8 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 
 function Dashboard() {
   const navigate = useNavigate();
+
+  const [offers,setOffers]=useState([]);
+
+  const fetchOffers=async()=>{
+    const response=await fetch('http://localhost:3000/offers');
+    const data=await response.json();;
+    setOffers(data);
+  }
 
   useEffect(() => {
     const isAuth = sessionStorage.getItem('isAuthenticated');
@@ -11,6 +19,18 @@ function Dashboard() {
     }
   }, [navigate]);
 
+  useEffect(()=>{
+    fetchOffers();
+  },[])
+
+  const completeOffer=async (id)=>{
+    await fetch(`http://localhost:3000/offers/${id}`,{
+      method:"DELETE"
+    });
+    // setOffers(prevOffers=>prevOffers.filter(offer=>offer.id!==id))
+    fetchOffers();
+  };
+
   const stats = [
     { label: 'Balance', value: '₹0', icon: '💰', color: 'from-purple-100 to-pink-100' },
     { label: 'Completed', value: '4', icon: '✅', color: 'from-pink-100 to-pink-200' },
@@ -18,11 +38,11 @@ function Dashboard() {
     { label: 'Pending', value: '2', icon: '⏳', color: 'from-purple-50 to-pink-50' }
   ];
 
-  const offers = [
-    { id: 1, title: 'Survey', reward: '₹50', time: '5 mins' },
-    { id: 2, title: 'Game', reward: '₹100', time: '10 mins' },
-    { id: 3, title: 'Install App', reward: '₹150', time: '2 mins' }
-  ];
+  // const offers = [
+  //   { id: 1, title: 'Survey', reward: '₹50', time: '5 mins' },
+  //   { id: 2, title: 'Game', reward: '₹100', time: '10 mins' },
+  //   { id: 3, title: 'Install App', reward: '₹150', time: '2 mins' }
+  // ];
 
   return (
     <div className="flex flex-col gap-8 pb-10">
@@ -72,8 +92,10 @@ function Dashboard() {
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="font-black text-xl text-pink-600 bg-pink-100/80 px-3 py-1 rounded-full">{offer.reward}</span>
-                  <button className="bg-purple-900 shadow-md shadow-purple-900/20 hover:bg-pink-500 text-white font-bold py-2 px-5 rounded-full transition-all hover:shadow-lg transform active:scale-95 text-sm cursor-pointer">
+                  <span className="font-black text-xl text-pink-600 bg-pink-100/80 px-3 py-1 rounded-full">₹{offer.reward}</span>
+                  <button 
+                  onClick={()=>completeOffer(offer.id)}
+                  className="bg-purple-900 shadow-md shadow-purple-900/20 hover:bg-pink-500 text-white font-bold py-2 px-5 rounded-full transition-all hover:shadow-lg transform active:scale-95 text-sm cursor-pointer">
                     Complete
                   </button>
                 </div>
