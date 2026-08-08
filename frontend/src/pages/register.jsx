@@ -52,7 +52,8 @@ function Register() {
         password:password,
         balance:0,
         completed:0,
-        totalearned:0
+        totalearned:0,
+        completedOffers: []
       })
     });
 
@@ -62,7 +63,7 @@ function Register() {
     setLoading(false);
     setsuccess(true);
     sessionStorage.setItem("isAuthenticated", "true");
-    sessionStorage.setItem("userId", data.id);;
+    sessionStorage.setItem("userId", data.id);
     navigate("/dashboard");
 
     // setTimeout(()=>{

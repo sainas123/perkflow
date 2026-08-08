@@ -35,24 +35,33 @@ function Dashboard() {
   },[])
 
   const completeOffer=async (id)=>{
-    const offerResponse=await fetch(`http://localhost:3000/offers/${id}`,{
-      method:"DELETE"
-    });
 
+    
+
+    const offerResponse=await fetch(`http://localhost:3000/offers/${id}`);
     const offer= await offerResponse.json();
+    console.log("offer:",offer);
+
     const userId=sessionStorage.getItem("userId");
+    const userResponse = await fetch(`http://localhost:3000/users/${userId}`);
+    const user = await userResponse.json();
+    console.log("user:",user);
 
     //updating the user in the db
      await fetch(`http://localhost:3000/users/${userId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      balance: user.balance + offer.reward,
-      completed: user.completed + 1,
-      totalearned: user.totalearned + offer.reward
-    })
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+        balance: user.balance + offer.reward,
+        completed: user.completed + 1,
+        totalearned: user.totalearned + offer.reward,
+        completedOffers: [
+        ...user.completedOffers,
+        offer.id
+        ]
+      })
   });
     // setOffers(prevOffers=>prevOffers.filter(offer=>offer.id!==id))
     fetchOffers();
@@ -129,7 +138,7 @@ function Dashboard() {
           </div>
           
           <div className="flex-1 grid gap-4">
-            {offers.map(offer => (
+            {offers.filter(offer => !user?.completedOffers?.includes(offer.id)).map(offer => (
               <div key={offer.id} className="group border border-pink-50 hover:border-pink-200 bg-gradient-to-r from-purple-50/20 to-pink-50/30 rounded-2xl p-4 flex items-center justify-between transition-all hover:bg-white/80">
                 <div className="flex flex-col">
                   <span className="font-bold text-purple-900 text-lg group-hover:text-pink-600 transition-colors">{offer.title}</span>
@@ -140,8 +149,11 @@ function Dashboard() {
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="font-black text-xl text-pink-600 bg-pink-100/80 px-3 py-1 rounded-full">₹{offer.reward}</span>
-                  <button 
-                  onClick={()=>completeOffer(offer.id)}
+                  <button
+                  type="button" 
+                  onClick={() => {
+                  completeOffer(offer.id);
+                  }}
                   className="bg-purple-900 shadow-md shadow-purple-900/20 hover:bg-pink-500 text-white font-bold py-2 px-5 rounded-full transition-all hover:shadow-lg transform active:scale-95 text-sm cursor-pointer">
                     Complete
                   </button>

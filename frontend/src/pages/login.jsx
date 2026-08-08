@@ -21,7 +21,7 @@ function Login() {
 
   }
 
-  const handlelogin=()=>{
+  const handlelogin= async()=>{
     if(email.trim()==="" || password.trim()===""){
       setsuccess(false);
       setError("Please fill in all fields");
@@ -36,14 +36,43 @@ function Login() {
       setsuccess(false);
       setError("");
       setLoading(true);
+
+    try {
+    const response = await fetch("http://localhost:3000/users");
+    const users = await response.json();
+
+    console.log("All users:", users);
+
+    const user = users.find(
+      user =>
+        user.email === email &&
+        user.password === password
+    );
+
+    console.log("Found user:", user);
+
+    if (!user) {
+      setLoading(false);
+      setError("Invalid email or password");
+      return;
+    }
+
+    sessionStorage.setItem("isAuthenticated", "true");
+    sessionStorage.setItem("userId", user.id);
+
+    setLoading(false);
+    setsuccess(true);
+
+    navigate("/dashboard");
+
+  } catch (error) {
+    console.log("Login error:", error);
+    setLoading(false);
+    setError("Something went wrong. Please try again.");
+  }
       
 
-      setTimeout(() => {
-        setLoading(false);
-        sessionStorage.setItem('isAuthenticated', 'true');
-        navigate("/dashboard");
-      }, 2000)
-      setError("");
+     
       
     }
   }
