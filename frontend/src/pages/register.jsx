@@ -62,6 +62,7 @@ function Register() {
     setLoading(false);
     setsuccess(true);
     sessionStorage.setItem("isAuthenticated", "true");
+    sessionStorage.setItem("userId", data.id);;
     navigate("/dashboard");
 
     // setTimeout(()=>{

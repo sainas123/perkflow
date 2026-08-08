@@ -5,6 +5,16 @@ function Dashboard() {
   const navigate = useNavigate();
 
   const [offers,setOffers]=useState([]);
+  const [user,setUser]=useState(null);
+  console.log(user)
+
+  const fetchUser=async()=>{
+    const userId=sessionStorage.getItem("userId");
+    const response=await fetch(`http://localhost:3000/users/${userId}`);
+    const data=await response.json();
+    console.log("userId:", userId);
+    setUser(data);
+  }
 
   const fetchOffers=async()=>{
     const response=await fetch('http://localhost:3000/offers');
@@ -21,22 +31,59 @@ function Dashboard() {
 
   useEffect(()=>{
     fetchOffers();
+    fetchUser();
   },[])
 
   const completeOffer=async (id)=>{
-    await fetch(`http://localhost:3000/offers/${id}`,{
+    const offerResponse=await fetch(`http://localhost:3000/offers/${id}`,{
       method:"DELETE"
     });
+
+    const offer= await offerResponse.json();
+    const userId=sessionStorage.getItem("userId");
+
+    //updating the user in the db
+     await fetch(`http://localhost:3000/users/${userId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      balance: user.balance + offer.reward,
+      completed: user.completed + 1,
+      totalearned: user.totalearned + offer.reward
+    })
+  });
     // setOffers(prevOffers=>prevOffers.filter(offer=>offer.id!==id))
     fetchOffers();
   };
 
-  const stats = [
-    { label: 'Balance', value: '₹0', icon: '💰', color: 'from-purple-100 to-pink-100' },
-    { label: 'Completed', value: '4', icon: '✅', color: 'from-pink-100 to-pink-200' },
-    { label: 'Total Earned', value: '₹550', icon: '💵', color: 'from-pink-50 to-purple-100' },
-    { label: 'Pending', value: '2', icon: '⏳', color: 'from-purple-50 to-pink-50' }
-  ];
+ const stats = [
+  {
+    label: 'Balance',
+    value: `₹${user?.balance ?? 0}`,
+    icon: '💰',
+    color: 'from-purple-100 to-pink-100'
+  },
+  {
+    label: 'Completed',
+    value: user?.completed ?? 0,
+    icon: '✅',
+    color: 'from-pink-100 to-pink-200'
+  },
+  {
+    label: 'Total Earned',
+    value: `₹${user?.totalearned ?? 0}`,
+    icon: '💵',
+    color: 'from-pink-50 to-purple-100'
+  },
+  {
+    label: 'Pending',
+    value: '2',
+    icon: '⏳',
+    color: 'from-purple-50 to-pink-50'
+  }
+];
 
   // const offers = [
   //   { id: 1, title: 'Survey', reward: '₹50', time: '5 mins' },
@@ -50,7 +97,7 @@ function Dashboard() {
       {/* Greeting Section */}
       <section className="bg-white/50 backdrop-blur-lg border border-pink-100 p-8 rounded-[2rem] shadow-sm">
         <h1 className="text-3xl font-black text-purple-900 tracking-tight mb-2 flex items-center gap-2">
-          <span className="text-4xl hover:animate-pulse cursor-default">👋</span> Good Evening, Saina
+          <span className="text-4xl hover:animate-pulse cursor-default">👋</span> Good Evening, {user?.name}
         </h1>
         <p className="text-lg text-purple-700/80 font-medium">Welcome back! Here's your rewards overview.</p>
       </section>

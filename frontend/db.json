@@ -1,18 +1,6 @@
 {
   "offers": [
     {
-      "id": "1",
-      "title": "Survey",
-      "reward": 50,
-      "time": "5 mins"
-    },
-    {
-      "id": "2",
-      "title": "Game",
-      "reward": 100,
-      "time": "10 mins"
-    },
-    {
       "id": "3",
       "title": "Install App",
       "reward": 150,
@@ -20,7 +8,33 @@
     }
   ],
   "users": [
-    
+    {
+      "name": "saina",
+      "email": "saina.@com",
+      "password": "saina",
+      "balance": 0,
+      "completed": 0,
+      "totalearned": 0,
+      "id": "diHfJEzEDcI"
+    },
+    {
+      "name": "saina",
+      "email": "saina.@com",
+      "password": "saina",
+      "balance": 0,
+      "completed": 0,
+      "totalearned": 0,
+      "id": "sYHRJDE3kwQ"
+    },
+    {
+      "name": "sainaaa",
+      "email": "saina.@com",
+      "password": "saina",
+      "balance": 150,
+      "completed": 2,
+      "totalearned": 150,
+      "id": "WGCZVAfeLbY"
+    }
   ],
   "$schema": "./node_modules/json-server/schema.json"
 }
