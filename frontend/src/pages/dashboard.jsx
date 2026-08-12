@@ -34,38 +34,34 @@ function Dashboard() {
     fetchUser();
   },[])
 
-  const completeOffer=async (id)=>{
+  const completeOffer=async (offerId)=>{
 
-    
+    try{
 
-    const offerResponse=await fetch(`http://localhost:5001/api/offers/${id}`);
-    const offer= await offerResponse.json();
-    console.log("offer:",offer);
+      const userId=sessionStorage.getItem("userId");
 
-    const userId=sessionStorage.getItem("userId");
-    const userResponse = await fetch(`http://localhost:5001/api/users/${userId}`);
-    const user = await userResponse.json();
-    console.log("user:",user);
+      const response=await fetch(`http://localhost:5001/api/users/${userId}/completeOffer/${offerId}`,
+        {
+          method:'PATCH'
+        }
+      );
 
-    //updating the user in the db
-     await fetch(`http://localhost:3000/users/${userId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-        balance: user.balance + offer.reward,
-        completed: user.completed + 1,
-        totalearned: user.totalearned + offer.reward,
-        completedOffers: [
-        ...user.completedOffers,
-        offer.id
-        ]
-      })
-  });
-    // setOffers(prevOffers=>prevOffers.filter(offer=>offer.id!==id))
-     await fetchUser();
-    await fetchOffers();
+      const data=await response.json();
+
+      if(!response.ok){
+        console.log(data.message);
+        return;
+      }
+
+      setUser(data);
+
+      await fetchOffers();
+
+    }catch(error){
+      console.log(error);
+
+    }
+ 
 
   };
 

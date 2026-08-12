@@ -154,10 +154,27 @@
       "email": "jung.@",
       "password": "jung",
       "id": "89bec936-224d-458b-aca0-158862a78348",
-      "balance": 0,
-      "completed": 0,
-      "totalearned": 0,
-      "completedOffers": []
+      "balance": 150,
+      "completed": 2,
+      "totalearned": 150,
+      "completedOffers": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "name": "masakali",
+      "email": "masakali.com@",
+      "password": "hello",
+      "id": "3dd9d6c9-c37e-409e-9cde-42cb74347539",
+      "balance": 300,
+      "completed": 3,
+      "totalearned": 300,
+      "completedOffers": [
+        "1",
+        "2",
+        "3"
+      ]
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

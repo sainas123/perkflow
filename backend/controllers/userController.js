@@ -38,7 +38,7 @@ export const loginUser=(req,res)=>{
 
     const {email,password}=req.body;
 
-    const user=data.users.find((user)=>user.email===email && user.password==password);
+    const user=data.users.find((user)=>user.email===email && user.password===password);
 
     if(!user){
         return res.status(401).json({message:"Invalid email or password"});
@@ -46,3 +46,36 @@ export const loginUser=(req,res)=>{
 
     res.json(user);
 }
+
+export const completeOffer=(req,res)=>{
+    const data=JSON.parse(fs.readFileSync('./db.json','utf-8'));
+
+    const {userId,offerId}=req.params;
+
+    const user=data.users.find((user)=>user.id===userId);
+
+    if(!user){
+        return res.status(404).json({message:"user not found"});
+    };
+
+    const offer=data.offers.find((offer)=>offer.id===offerId);
+
+    if(!offer){
+        return res.status(404).json({message:"offer not found"});
+    }
+
+    if(user.completedOffers.includes(offer.id)){
+        return res.status(404).json({message:"offer already completed"});
+    }
+
+    user.balance += offer.reward;
+    user.completed += 1;
+    user.totalearned += offer.reward;
+
+    user.completedOffers.push(offer.id);
+
+    fs.writeFileSync('./db.json',JSON.stringify(data,null,2));
+
+    res.json(user);
+}
+
