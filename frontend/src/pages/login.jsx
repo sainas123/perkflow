@@ -38,27 +38,33 @@ function Login() {
       setLoading(true);
 
     try {
-    const response = await fetch("http://localhost:3000/users");
-    const users = await response.json();
 
-    console.log("All users:", users);
+      const response=await fetch("http://localhost:5001/api/users/login",
+        {
 
-    const user = users.find(
-      user =>
-        user.email === email &&
-        user.password === password
-    );
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
 
-    console.log("Found user:", user);
+          body: JSON.stringify({
+            email:email,
+            password:password
+          })
+      })
 
-    if (!user) {
-      setLoading(false);
-      setError("Invalid email or password");
-      return;
-    }
+      const data = await response.json();
 
+      console.log(data);
+
+      if(!response.ok){
+        setLoading(false);
+        setError(data.message);
+        return;
+      }
+    
     sessionStorage.setItem("isAuthenticated", "true");
-    sessionStorage.setItem("userId", user.id);
+    sessionStorage.setItem("userId", data.id);
 
     setLoading(false);
     setsuccess(true);
@@ -70,10 +76,7 @@ function Login() {
     setLoading(false);
     setError("Something went wrong. Please try again.");
   }
-      
-
-     
-      
+   
     }
   }
 

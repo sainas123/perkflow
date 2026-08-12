@@ -40,7 +40,7 @@ function Register() {
     setLoading(true);
 
 
-    const response=await fetch("http://localhost:3000/users",{
+    const response=await fetch("http://localhost:5001/api/users",{
 
       method:"POST",
       headers:{
@@ -49,11 +49,7 @@ function Register() {
       body:JSON.stringify({
         name:name,
         email:email,
-        password:password,
-        balance:0,
-        completed:0,
-        totalearned:0,
-        completedOffers: []
+        password:password
       })
     });
 

@@ -10,14 +10,14 @@ function Dashboard() {
 
   const fetchUser=async()=>{
     const userId=sessionStorage.getItem("userId");
-    const response=await fetch(`http://localhost:3000/users/${userId}`);
+    const response=await fetch(`http://localhost:5001/api/users/${userId}`);
     const data=await response.json();
     console.log("userId:", userId);
     setUser(data);
   }
 
   const fetchOffers=async()=>{
-    const response=await fetch('http://localhost:3000/offers');
+    const response=await fetch('http://localhost:5001/api/offers');
     const data=await response.json();;
     setOffers(data);
   }
@@ -38,12 +38,12 @@ function Dashboard() {
 
     
 
-    const offerResponse=await fetch(`http://localhost:3000/offers/${id}`);
+    const offerResponse=await fetch(`http://localhost:5001/api/offers/${id}`);
     const offer= await offerResponse.json();
     console.log("offer:",offer);
 
     const userId=sessionStorage.getItem("userId");
-    const userResponse = await fetch(`http://localhost:3000/users/${userId}`);
+    const userResponse = await fetch(`http://localhost:5001/api/users/${userId}`);
     const user = await userResponse.json();
     console.log("user:",user);
 
