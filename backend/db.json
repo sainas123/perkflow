@@ -45,6 +45,47 @@
         "1"
       ],
       "id": "sLMMole9954"
+    },
+    {
+      "name": "saina",
+      "email": "saina...@",
+      "password": "sai",
+      "balance": 300,
+      "completed": 3,
+      "totalearned": 300,
+      "completedOffers": [
+        "1",
+        "2",
+        "3"
+      ],
+      "id": "WATDd4rcVH8"
+    },
+    {
+      "name": "ayaan",
+      "email": "seema.@",
+      "password": "ayaan",
+      "balance": 300,
+      "completed": 3,
+      "totalearned": 300,
+      "completedOffers": [
+        "1",
+        "2",
+        "3"
+      ],
+      "id": "ysm6sHWe15U"
+    },
+    {
+      "name": "saina",
+      "email": "saina.@com",
+      "password": "saina",
+      "balance": 150,
+      "completed": 2,
+      "totalearned": 150,
+      "completedOffers": [
+        "1",
+        "2"
+      ],
+      "id": "zQzuO3WzhzY"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

@@ -64,7 +64,9 @@ function Dashboard() {
       })
   });
     // setOffers(prevOffers=>prevOffers.filter(offer=>offer.id!==id))
-    fetchOffers();
+     await fetchUser();
+    await fetchOffers();
+
   };
 
  const stats = [
